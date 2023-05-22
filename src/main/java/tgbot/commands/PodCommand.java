@@ -4,13 +4,12 @@ import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 import tgbot.config.BotConfig;
 import tgbot.dto.pod.NasaPictureOfADayObject;
 import tgbot.service.HttpClientService;
 
 @Slf4j
-public class PodCommand extends BotCommand implements CommandHandler {
+public class PodCommand extends BotCommandAbstract {
 
     public PodCommand(@NonNull String command, @NonNull String description) {
         super(command, description);
@@ -32,5 +31,4 @@ public class PodCommand extends BotCommand implements CommandHandler {
         }
         return msg;
     }
-
 }

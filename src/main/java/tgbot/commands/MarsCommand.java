@@ -10,7 +10,7 @@ import tgbot.dto.mars.MarsPhotoResponse;
 import tgbot.service.HttpClientService;
 
 @Slf4j
-public class MarsCommand extends BotCommand implements CommandHandler {
+public class MarsCommand extends BotCommandAbstract {
 
     public MarsCommand(@NonNull String command, @NonNull String description) {
         super(command, description);

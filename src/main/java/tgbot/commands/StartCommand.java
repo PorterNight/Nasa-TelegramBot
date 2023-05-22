@@ -4,10 +4,9 @@ import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 
 @Slf4j
-public class StartCommand extends BotCommand implements CommandHandler {
+public class StartCommand extends BotCommandAbstract {
 
     public StartCommand(@NonNull String command, @NonNull String description) {
         super(command, description);

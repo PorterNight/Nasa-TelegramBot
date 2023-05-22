@@ -3,9 +3,9 @@
 [![NasabotCI](https://github.com/PorterNight/Nasa-TelegramBot/actions/workflows/nasabot.yml/badge.svg)](https://github.com/PorterNight/Nasa-TelegramBot/actions/workflows/nasabot.yml)
 
 ## General info
-Telegram bot предоставляет две комманды: 
-* "POD" - фото дня выбранное случайным образом 
-* "Mars" - фото с марсохода Curiosity выбранное случайным образом 
+Telegram bot предоставляет две команды: 
+* "/pod" - (picture of a day) фото дня выбранное случайным образом 
+* "/mars" - фото с марсохода Curiosity выбранное случайным образом 
 
  Фото берутся с сайта NASA https://api.nasa.gov/ 
 
