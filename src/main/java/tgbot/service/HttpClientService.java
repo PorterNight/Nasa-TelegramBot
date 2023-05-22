@@ -9,7 +9,8 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
-import tgbot.dto.NasaPictureOfADayObject;
+import tgbot.dto.mars.MarsPhotoResponse;
+import tgbot.dto.pod.NasaPictureOfADayObject;
 
 @Slf4j
 public class HttpClientService {
@@ -30,21 +31,36 @@ public class HttpClientService {
 
     private static ObjectMapper objectMapper = new ObjectMapper();
 
-
     public static NasaPictureOfADayObject[] getNasaObject(String url) throws Exception {
 
         CloseableHttpResponse httpResponse = httpClient.execute(new HttpGet(url));
-        NasaPictureOfADayObject[] nasaObjects = null;
+        NasaPictureOfADayObject[] nasaPictureOfADayObject = null;
 
         try {
-            nasaObjects = objectMapper.readValue(httpResponse.getEntity().getContent(),
+            nasaPictureOfADayObject = objectMapper.readValue(httpResponse.getEntity().getContent(),
                 NasaPictureOfADayObject[].class);
         } catch (StreamReadException e) {
-            log.warn("StreamReadException !");
+            log.warn("NasaPictureOfADayObject StreamReadException !");
         } catch (DatabindException e) {
-            log.warn("DatabindException !");
+            log.warn("NasaPictureOfADayObject DatabindException !");
         }
 
-        return nasaObjects;
+        return nasaPictureOfADayObject;
+    }
+
+    public static MarsPhotoResponse getMarsPhotos(String url) throws Exception {
+        CloseableHttpResponse httpResponse = httpClient.execute(new HttpGet(url));
+        MarsPhotoResponse marsPhotoResponse = null;
+
+        try {
+            marsPhotoResponse = objectMapper.readValue(httpResponse.getEntity().getContent(),
+                MarsPhotoResponse.class);
+        } catch (StreamReadException e) {
+            log.warn("MarsPhotoResponse StreamReadException !");
+        } catch (DatabindException e) {
+            log.warn("MarsPhotoResponse DatabindException !");
+        }
+
+        return marsPhotoResponse;
     }
 }

@@ -20,7 +20,7 @@ Telegram bot предоставляет две комманды:
 * Checkstyle
 
 ### Run
-Проект собирается в Docker image, для запуска установите переменные среды:
+Проект собирается в Docker image, при запуске контейнера установите переменные среды:
 * NASA_TGBOT_USERNAME - username of your telegram bot
 * NASA_TGBOT_TOKEN - token of your telegram bot
 * NASA_TOKEN - token from https://api.nasa.gov/, you can use demo-key: DEMO_KEY

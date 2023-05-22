@@ -6,13 +6,13 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 import tgbot.config.BotConfig;
-import tgbot.dto.pod.NasaPictureOfADayObject;
+import tgbot.dto.mars.MarsPhotoResponse;
 import tgbot.service.HttpClientService;
 
 @Slf4j
-public class PodCommand extends BotCommand implements CommandHandler {
+public class MarsCommand extends BotCommand implements CommandHandler {
 
-    public PodCommand(@NonNull String command, @NonNull String description) {
+    public MarsCommand(@NonNull String command, @NonNull String description) {
         super(command, description);
     }
 
@@ -21,16 +21,15 @@ public class PodCommand extends BotCommand implements CommandHandler {
         SendMessage msg = new SendMessage();
         msg.setChatId(update.getMessage().getChatId());
 
-        log.info(BotConfig.POD_URL);
+        log.info(BotConfig.MARS_URL);
 
         try {
-            NasaPictureOfADayObject[] obj = HttpClientService.getNasaObject(BotConfig.POD_URL);
-            msg.setText(obj[0].getTitle() + " " + obj[0].getHdurl());
+            MarsPhotoResponse obj = HttpClientService.getMarsPhotos(BotConfig.MARS_URL);
+            msg.setText(obj.getPhotos().get(0).getEarthDate() + " " + obj.getPhotos().get(0).getImgSrc());
         } catch (Exception e) {
             log.warn("error getting objects !");
             throw new RuntimeException(e);
         }
         return msg;
     }
-
 }
