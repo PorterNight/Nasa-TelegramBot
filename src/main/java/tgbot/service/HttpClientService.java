@@ -15,8 +15,8 @@ import tgbot.dto.pod.NasaPictureOfADayObject;
 @Slf4j
 public class HttpClientService {
 
-    private static final int CONNECT_TIMEOUT = 3000;
-    private static final int SOCKET_TIMEOUT = 10000;
+    private static final int CONNECT_TIMEOUT = 10000;
+    private static final int SOCKET_TIMEOUT = 20000;
 
     private HttpClientService() {
     }
