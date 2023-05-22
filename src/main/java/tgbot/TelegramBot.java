@@ -4,7 +4,6 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -12,24 +11,25 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
-import tgbot.commands.CommandHandler;
+import tgbot.commands.BotCommandAbstract;
 import tgbot.commands.HelpCommand;
 import tgbot.commands.MarsCommand;
 import tgbot.commands.PodCommand;
 import tgbot.commands.StartCommand;
 import tgbot.config.BotConfig;
+import static tgbot.commands.BotCommands.*;
 
 @Slf4j
 public class TelegramBot extends TelegramLongPollingBot {
 
-    private final List<CommandHandler> commands;
+    private final List<BotCommandAbstract> commands;
 
     public TelegramBot() throws TelegramApiException {
         commands = new ArrayList<>();
-        commands.add(new StartCommand("/start", "command to register new user"));
-        commands.add(new PodCommand("/pod", "command is used to get random picture of the day"));
-        commands.add(new MarsCommand("/mars", "command is used to get random picture from Mars"));
-        commands.add(new HelpCommand("/help", "command is used to get help", commands));
+        commands.add(new StartCommand(START.getCommand(), START.getDescription()));
+        commands.add(new PodCommand(POD.getCommand(), POD.getDescription()));
+        commands.add(new MarsCommand(MARS.getCommand(), MARS.getDescription()));
+        commands.add(new HelpCommand(HELP.getCommand(), HELP.getDescription(), commands));
 
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
         telegramBotsApi.registerBot(this);
@@ -53,10 +53,10 @@ public class TelegramBot extends TelegramLongPollingBot {
             String cmd = update.getMessage().getText();
 
             // process user commands
-            for (CommandHandler commandHandler : commands) {
-                BotCommand command = (BotCommand) commandHandler;
+            for (BotCommandAbstract command : commands) {
+
                 if (cmd.equalsIgnoreCase(command.getCommand())) {
-                    sendMenu(commandHandler.handle(update));
+                    sendMessageWithMenu(command.handle(update));
                     break;
                 }
             }
@@ -67,11 +67,12 @@ public class TelegramBot extends TelegramLongPollingBot {
         try {
             execute(msg);
         } catch (TelegramApiException e) {
+            log.warn("error while sending message to telegram-bot");
             throw new RuntimeException(e);
         }
     }
 
-    public void sendMenu(SendMessage msg) {
+    public void sendMessageWithMenu(SendMessage msg) {
 
         ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
         List<KeyboardRow> keyboard = new ArrayList<>();
@@ -79,23 +80,19 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         // first row of 2 buttons
         row = new KeyboardRow();
-        row.add(((BotCommand) commands.get(1)).getCommand());
-        row.add(((BotCommand) commands.get(2)).getCommand());
+        row.add(POD.getCommand());
+        row.add(MARS.getCommand());
         keyboard.add(row);
 
         // second row of 1 button
         row = new KeyboardRow();
-        row.add(((BotCommand) commands.get(3)).getCommand());
+        row.add(HELP.getCommand());
         keyboard.add(row);
 
         keyboardMarkup.setKeyboard(keyboard);
         keyboardMarkup.setResizeKeyboard(true);
         msg.setReplyMarkup(keyboardMarkup);
 
-        try {
-            execute(msg);
-        } catch (TelegramApiException e) {
-            log.warn("error while sending message to telegram-bot");
-        }
+        sendMessage(msg);
     }
 }
