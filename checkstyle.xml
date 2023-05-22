@@ -143,7 +143,7 @@
 
         <!-- https://checkstyle.org/config_imports.html -->
         <!--            Checks for imports              -->
-        <module name="AvoidStarImport"/>
+        <!-- <module name="AvoidStarImport"/> -->
         <!-- <module name="AvoidStaticImport"/> -->
         <!-- <module name="CustomImportOrder"/> -->
         <module name="IllegalImport"/> <!-- defaults to sun.* packages -->
