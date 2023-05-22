@@ -1,6 +1,6 @@
 # Nasa Telegram bot
 
-[![NasabotCI](https://github.com/PorterNight/Nasa-Bot/actions/workflows/nasabot.yml/badge.svg)](https://github.com/PorterNight/Nasa-Bot/actions/workflows/nasabot.yml)
+[![NasabotCI](https://github.com/PorterNight/Nasa-TelegramBot/actions/workflows/nasabot.yml/badge.svg)](https://github.com/PorterNight/Nasa-TelegramBot/actions/workflows/nasabot.yml)
 
 ## General info
 Telegram bot предоставляет две комманды: 
