@@ -1,4 +1,4 @@
-package tgbot.dto;
+package tgbot.dto.pod;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

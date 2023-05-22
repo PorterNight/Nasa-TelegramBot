@@ -4,6 +4,7 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -11,6 +12,9 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import tgbot.commands.CommandHandler;
+import tgbot.commands.HelpCommand;
+import tgbot.commands.MarsCommand;
 import tgbot.commands.PodCommand;
 import tgbot.commands.StartCommand;
 import tgbot.config.BotConfig;
@@ -18,10 +22,15 @@ import tgbot.config.BotConfig;
 @Slf4j
 public class TelegramBot extends TelegramLongPollingBot {
 
-    StartCommand startCommand = new StartCommand("/start", "command to register new user");
-    PodCommand podCommand = new PodCommand("POD", "command is used to get random picture of the day");
+    private final List<CommandHandler> commands;
 
     public TelegramBot() throws TelegramApiException {
+        commands = new ArrayList<>();
+        commands.add(new StartCommand("/start", "command to register new user"));
+        commands.add(new PodCommand("/pod", "command is used to get random picture of the day"));
+        commands.add(new MarsCommand("/mars", "command is used to get random picture from Mars"));
+        commands.add(new HelpCommand("/help", "command is used to get help", commands));
+
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
         telegramBotsApi.registerBot(this);
     }
@@ -43,13 +52,12 @@ public class TelegramBot extends TelegramLongPollingBot {
 
             String cmd = update.getMessage().getText();
 
-            if (cmd.equalsIgnoreCase(startCommand.getCommand())) {
-                sendMenu(startCommand.handle(update));
-            } else {
-
-                // process user commands
-                if (cmd.equalsIgnoreCase(podCommand.getCommand())) {
-                    sendMenu(podCommand.handle(update));
+            // process user commands
+            for (CommandHandler commandHandler : commands) {
+                BotCommand command = (BotCommand) commandHandler;
+                if (cmd.equalsIgnoreCase(command.getCommand())) {
+                    sendMenu(commandHandler.handle(update));
+                    break;
                 }
             }
         }
@@ -71,13 +79,13 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         // first row of 2 buttons
         row = new KeyboardRow();
-        row.add(podCommand.getCommand());
-        row.add("Mars Curiosity");
+        row.add(((BotCommand) commands.get(1)).getCommand());
+        row.add(((BotCommand) commands.get(2)).getCommand());
         keyboard.add(row);
 
         // second row of 1 button
         row = new KeyboardRow();
-        row.add("Help");
+        row.add(((BotCommand) commands.get(3)).getCommand());
         keyboard.add(row);
 
         keyboardMarkup.setKeyboard(keyboard);
@@ -87,6 +95,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         try {
             execute(msg);
         } catch (TelegramApiException e) {
+            log.warn("error while sending message to telegram-bot");
         }
     }
 }
