@@ -1,0 +1,68 @@
+name: NasabotCI
+
+env:
+  DOCKER_IMAGE_NAME: nasabot-image:latest
+
+on:
+  push:
+    paths:
+      - '.github/workflows/nasabot.yml'
+      - 'src/**'
+      - 'pom.xml'
+      - 'checkstyle.xml'
+      - '.editorconfig'
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    env:
+      WNASA_TGBOT_TOKEN: ${{ secrets.WNASA_TGBOT_TOKEN }}
+      WNASA_TGBOT_USERNAME: ${{ secrets.WNASA_TGBOT_USERNAME }}
+      WNASA_TOKEN: ${{ secrets.WNASA_TOKEN }}
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: setup JDK 19
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '19'
+          cache: maven
+
+      - name: maven package
+        run: mvn package 
+
+      - name: set lowercase repo name
+        id: github_repo_lowercase
+        run: echo "github_repo_lowercase=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
+      - name: login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: docker build nasabot module
+        run: docker build --file Dockerfile -t ghcr.io/${{ env.github_repo_lowercase }}/${{ env.DOCKER_IMAGE_NAME }} .
+
+      - name: Push Docker image to GHCR
+        run: docker push ghcr.io/${{ env.github_repo_lowercase }}/${{ env.DOCKER_IMAGE_NAME }}
+
+  checkstyle:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 19
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '19'
+          cache: maven
+      - name: run checkstyle
+        run: mvn checkstyle:check
