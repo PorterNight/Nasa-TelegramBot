@@ -21,7 +21,7 @@ public class HttpClientService {
     private HttpClientService() {
     }
 
-    private static final CloseableHttpClient httpClient = HttpClientBuilder.create()
+    private static final CloseableHttpClient HTTP_CLIENT = HttpClientBuilder.create()
         .setDefaultRequestConfig(RequestConfig.custom()
             .setConnectTimeout(CONNECT_TIMEOUT)
             .setSocketTimeout(SOCKET_TIMEOUT)
@@ -29,15 +29,15 @@ public class HttpClientService {
             .build())
         .build();
 
-    private static final ObjectMapper objectMapper = new ObjectMapper();
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     public static NasaPictureOfADayObject[] getNasaPictureOfADayObject(String url) throws Exception {
 
-        CloseableHttpResponse httpResponse = httpClient.execute(new HttpGet(url));
+        CloseableHttpResponse httpResponse = HTTP_CLIENT.execute(new HttpGet(url));
         NasaPictureOfADayObject[] nasaPictureOfADayObject = null;
 
         try {
-            nasaPictureOfADayObject = objectMapper.readValue(httpResponse.getEntity().getContent(),
+            nasaPictureOfADayObject = OBJECT_MAPPER.readValue(httpResponse.getEntity().getContent(),
                 NasaPictureOfADayObject[].class);
         } catch (StreamReadException e) {
             log.warn("NasaPictureOfADayObject StreamReadException !");
@@ -49,11 +49,11 @@ public class HttpClientService {
     }
 
     public static MarsPhotoResponse getMarsPhotos(String url) throws Exception {
-        CloseableHttpResponse httpResponse = httpClient.execute(new HttpGet(url));
+        CloseableHttpResponse httpResponse = HTTP_CLIENT.execute(new HttpGet(url));
         MarsPhotoResponse marsPhotoResponse = null;
 
         try {
-            marsPhotoResponse = objectMapper.readValue(httpResponse.getEntity().getContent(),
+            marsPhotoResponse = OBJECT_MAPPER.readValue(httpResponse.getEntity().getContent(),
                 MarsPhotoResponse.class);
         } catch (StreamReadException e) {
             log.warn("MarsPhotoResponse StreamReadException !");
