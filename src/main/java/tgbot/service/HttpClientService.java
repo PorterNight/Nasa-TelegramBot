@@ -21,7 +21,7 @@ public class HttpClientService {
     private HttpClientService() {
     }
 
-    private static CloseableHttpClient httpClient = HttpClientBuilder.create()
+    private static final CloseableHttpClient httpClient = HttpClientBuilder.create()
         .setDefaultRequestConfig(RequestConfig.custom()
             .setConnectTimeout(CONNECT_TIMEOUT)
             .setSocketTimeout(SOCKET_TIMEOUT)
@@ -29,9 +29,9 @@ public class HttpClientService {
             .build())
         .build();
 
-    private static ObjectMapper objectMapper = new ObjectMapper();
+    private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    public static NasaPictureOfADayObject[] getNasaObject(String url) throws Exception {
+    public static NasaPictureOfADayObject[] getNasaPictureOfADayObject(String url) throws Exception {
 
         CloseableHttpResponse httpResponse = httpClient.execute(new HttpGet(url));
         NasaPictureOfADayObject[] nasaPictureOfADayObject = null;

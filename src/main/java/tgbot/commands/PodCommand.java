@@ -23,7 +23,7 @@ public class PodCommand extends BotCommandAbstract {
         log.info(BotConfig.POD_URL);
 
         try {
-            NasaPictureOfADayObject[] obj = HttpClientService.getNasaObject(BotConfig.POD_URL);
+            NasaPictureOfADayObject[] obj = HttpClientService.getNasaPictureOfADayObject(BotConfig.POD_URL);
             msg.setText(obj[0].getTitle() + " " + obj[0].getHdurl());
         } catch (Exception e) {
             log.warn("error getting objects !");
