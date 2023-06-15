@@ -1,19 +1,22 @@
 package tgbot.commands;
 
-import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import tgbot.config.BotConfig;
 import tgbot.dto.mars.MarsPhotoResponse;
-import tgbot.service.HttpClientService;
+import tgbot.service.ClientService;
+import static tgbot.commands.BotCommands.MARS;
 import static tgbot.config.BotConfig.getMarsUrl;
 
 @Slf4j
 public class MarsCommand extends BotCommandAbstract {
 
-    public MarsCommand(@NonNull String command, @NonNull String description) {
-        super(command, description);
+    private final ClientService clientService;
+
+    public MarsCommand(ClientService clientService) {
+        super(MARS.getCommand(), MARS.getDescription());
+        this.clientService = clientService;
     }
 
     public SendMessage handle(Update update) {
@@ -24,7 +27,7 @@ public class MarsCommand extends BotCommandAbstract {
         log.info(BotConfig.getMarsUrl());
 
         try {
-            MarsPhotoResponse obj = HttpClientService.getMarsPhotos(getMarsUrl());
+            MarsPhotoResponse obj = clientService.getMarsPhotos(getMarsUrl());
             msg.setText(obj.getPhotos().get(0).getEarthDate() + " " + obj.getPhotos().get(0).getImgSrc());
         } catch (Exception e) {
             log.warn("error getting objects !");

@@ -4,8 +4,6 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 import java.util.ArrayList;
@@ -13,23 +11,24 @@ import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import tgbot.commands.BotCommandAbstract;
 import tgbot.commands.HelpCommand;
+import tgbot.commands.ReplyKeyboardMenu;
 import tgbot.commands.MarsCommand;
 import tgbot.commands.PodCommand;
 import tgbot.commands.StartCommand;
 import tgbot.config.BotConfig;
-import static tgbot.commands.BotCommands.*;
+import tgbot.service.ClientService;
 
 @Slf4j
 public class TelegramBot extends TelegramLongPollingBot {
 
     private final List<BotCommandAbstract> commands;
 
-    public TelegramBot() throws TelegramApiException {
+    public TelegramBot(ClientService clientService) throws TelegramApiException {
         commands = new ArrayList<>();
-        commands.add(new StartCommand(START.getCommand(), START.getDescription()));
-        commands.add(new PodCommand(POD.getCommand(), POD.getDescription()));
-        commands.add(new MarsCommand(MARS.getCommand(), MARS.getDescription()));
-        commands.add(new HelpCommand(HELP.getCommand(), HELP.getDescription(), commands));
+        commands.add(new StartCommand());
+        commands.add(new PodCommand(clientService));
+        commands.add(new MarsCommand(clientService));
+        commands.add(new HelpCommand(commands));
 
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
         telegramBotsApi.registerBot(this);
@@ -56,7 +55,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             for (BotCommandAbstract command : commands) {
 
                 if (cmd.equalsIgnoreCase(command.getCommand())) {
-                    sendMessageWithMenu(command.handle(update));
+                    sendMessage(command.handle(update));
                     break;
                 }
             }
@@ -65,34 +64,11 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     private void sendMessage(SendMessage msg) {
         try {
+            msg.setReplyMarkup((new ReplyKeyboardMenu()).getKeyboardMarkup());
             execute(msg);
         } catch (TelegramApiException e) {
             log.warn("error while sending message to telegram-bot");
             throw new RuntimeException(e);
         }
-    }
-
-    public void sendMessageWithMenu(SendMessage msg) {
-
-        ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
-        List<KeyboardRow> keyboard = new ArrayList<>();
-        KeyboardRow row;
-
-        // first row of 2 buttons
-        row = new KeyboardRow();
-        row.add(POD.getCommand());
-        row.add(MARS.getCommand());
-        keyboard.add(row);
-
-        // second row of 1 button
-        row = new KeyboardRow();
-        row.add(HELP.getCommand());
-        keyboard.add(row);
-
-        keyboardMarkup.setKeyboard(keyboard);
-        keyboardMarkup.setResizeKeyboard(true);
-        msg.setReplyMarkup(keyboardMarkup);
-
-        sendMessage(msg);
     }
 }

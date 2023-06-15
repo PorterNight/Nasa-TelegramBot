@@ -1,18 +1,18 @@
 package tgbot.commands;
 
-import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import java.util.List;
+import static tgbot.commands.BotCommands.HELP;
 
 @Slf4j
 public class HelpCommand extends BotCommandAbstract {
 
     private final List<BotCommandAbstract> commands;
 
-    public HelpCommand(@NonNull String command, @NonNull String description, List<BotCommandAbstract> commands) {
-        super(command, description);
+    public HelpCommand(List<BotCommandAbstract> commands) {
+        super(HELP.getCommand(), HELP.getDescription());
         this.commands = commands;
     }
 

@@ -22,9 +22,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
-import static tgbot.commands.BotCommands.MARS;
-import static tgbot.commands.BotCommands.POD;
-import org.mockito.MockedStatic;
 
 @ExtendWith(MockitoExtension.class)
 public class TgCommansTest {
@@ -36,15 +33,17 @@ public class TgCommansTest {
     private Message message;
 
     @InjectMocks
-    private MarsCommand marsCommand = new MarsCommand(MARS.getCommand(), MARS.getDescription());
+    private final HttpClientService httpClientService = new HttpClientService();
 
     @InjectMocks
-    private PodCommand podCommand = new PodCommand(POD.getCommand(), POD.getDescription());
+    private MarsCommand marsCommand = new MarsCommand(httpClientService);
+
+    @InjectMocks
+    private PodCommand podCommand = new PodCommand(httpClientService);
 
 
     @Test
-    public void MarsCommandTest (){
-        try (MockedStatic<HttpClientService> httpClientServiceMock = Mockito.mockStatic(HttpClientService.class)) {
+    public void MarsCommandTest () throws Exception {
 
             // arrange
             long chatId = 123L;
@@ -57,19 +56,17 @@ public class TgCommansTest {
             when(update.getMessage()).thenReturn(message);
             when(update.getMessage().getChatId()).thenReturn(chatId);
 
-            httpClientServiceMock.when(() -> HttpClientService.getMarsPhotos(anyString())).thenReturn(marsPhotoResponse); // mock to return the response for any non-null string
+            when(httpClientService.getMarsPhotos(anyString())).thenReturn(marsPhotoResponse);
 
             // act
             SendMessage result = marsCommand.handle(update);
 
             // assert
             assertEquals("https://mars.com", result.getText().split(" ")[1]);
-        }
     }
 
     @Test
-    public void PodCommandTest() {
-        try (MockedStatic<HttpClientService> httpClientServiceMock = Mockito.mockStatic(HttpClientService.class)) {
+    public void PodCommandTest() throws Exception {
 
             // arrange
             long chatId = 123L;
@@ -79,14 +76,13 @@ public class TgCommansTest {
             when(update.getMessage()).thenReturn(message);
             when(update.getMessage().getChatId()).thenReturn(chatId);
 
-            httpClientServiceMock.when(() -> HttpClientService.getNasaPictureOfADayObject(anyString())).thenReturn(podObjects); // mock to return the response for any non-null string
+            when(httpClientService.getNasaPictureOfADayObject(anyString())).thenReturn(podObjects); // mock to return the response for any non-null string
 
             // act
             SendMessage result = podCommand.handle(update);
 
             // assert
             assertEquals("title https://nasa.com", result.getText());
-        }
     }
 
 }
