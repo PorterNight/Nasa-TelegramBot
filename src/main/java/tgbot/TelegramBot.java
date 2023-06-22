@@ -13,7 +13,7 @@ import tgbot.commands.BotCommandAbstract;
 import tgbot.commands.HelpCommand;
 import tgbot.commands.ReplyKeyboardMenu;
 import tgbot.commands.MarsCommand;
-import tgbot.commands.PodCommand;
+import tgbot.commands.PictureOfTheDayCommand;
 import tgbot.commands.StartCommand;
 import tgbot.config.BotConfig;
 import tgbot.service.ClientService;
@@ -26,7 +26,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     public TelegramBot(ClientService clientService) throws TelegramApiException {
         commands = new ArrayList<>();
         commands.add(new StartCommand());
-        commands.add(new PodCommand(clientService));
+        commands.add(new PictureOfTheDayCommand(clientService));
         commands.add(new MarsCommand(clientService));
         commands.add(new HelpCommand(commands));
 
