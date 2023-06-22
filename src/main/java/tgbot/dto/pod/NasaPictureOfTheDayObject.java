@@ -2,7 +2,7 @@ package tgbot.dto.pod;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class NasaPictureOfADayObject {
+public class NasaPictureOfTheDayObject {
     private final String copyright;
     private final String date;
     private final String explanation;
@@ -12,7 +12,7 @@ public class NasaPictureOfADayObject {
     private final String title;
     private final String url;
 
-    public NasaPictureOfADayObject(
+    public NasaPictureOfTheDayObject(
             @JsonProperty("copyright") String copyright,
             @JsonProperty("date") String date,
             @JsonProperty("explanation") String explanation,

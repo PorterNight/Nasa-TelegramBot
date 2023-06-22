@@ -10,7 +10,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import tgbot.dto.mars.MarsPhotoResponse;
-import tgbot.dto.pod.NasaPictureOfADayObject;
+import tgbot.dto.pod.NasaPictureOfTheDayObject;
 
 @Slf4j
 public class HttpClientService implements ClientService {
@@ -32,14 +32,14 @@ public class HttpClientService implements ClientService {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
-    public NasaPictureOfADayObject[] getNasaPictureOfADayObject(String url) throws Exception {
+    public NasaPictureOfTheDayObject[] getNasaPictureOfTheDayObject(String url) throws Exception {
 
         CloseableHttpResponse httpResponse = httpClient.execute(new HttpGet(url));
-        NasaPictureOfADayObject[] nasaPictureOfADayObject = null;
+        NasaPictureOfTheDayObject[] nasaPictureOfADayObject = null;
 
         try {
             nasaPictureOfADayObject = objectMapper.readValue(httpResponse.getEntity().getContent(),
-                NasaPictureOfADayObject[].class);
+                NasaPictureOfTheDayObject[].class);
         } catch (StreamReadException e) {
             log.warn("NasaPictureOfADayObject StreamReadException !");
         } catch (DatabindException e) {
