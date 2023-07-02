@@ -1,14 +1,14 @@
 package tgbot;
 
-import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.TelegramBotsApi;
+import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.bots.TelegramWebhookBot;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import tgbot.commands.BotCommandAbstract;
 import tgbot.commands.HelpCommand;
 import tgbot.commands.ReplyKeyboardMenu;
@@ -19,19 +19,18 @@ import tgbot.config.BotConfig;
 import tgbot.service.ClientService;
 
 @Slf4j
-public class TelegramBot extends TelegramLongPollingBot {
+@Component
+public class TelegramBot extends TelegramWebhookBot {
 
     private final List<BotCommandAbstract> commands;
 
-    public TelegramBot(ClientService clientService) throws TelegramApiException {
+    public TelegramBot(ClientService clientService) {
+        super(BotConfig.TG_BOT_TOKEN);
         commands = new ArrayList<>();
         commands.add(new StartCommand());
         commands.add(new PictureOfTheDayCommand(clientService));
         commands.add(new MarsCommand(clientService));
         commands.add(new HelpCommand(commands));
-
-        TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
-        telegramBotsApi.registerBot(this);
     }
 
     @Override
@@ -40,12 +39,12 @@ public class TelegramBot extends TelegramLongPollingBot {
     }
 
     @Override
-    public String getBotToken() {
-        return BotConfig.TG_BOT_TOKEN;
+    public String getBotPath() {
+        return BotConfig.WEBHOOK_URL;
     }
 
     @Override
-    public void onUpdateReceived(Update update) {
+    public BotApiMethod<?> onWebhookUpdateReceived(Update update) {
 
         if (update.hasMessage() && update.getMessage().hasText()) {
 
@@ -55,20 +54,21 @@ public class TelegramBot extends TelegramLongPollingBot {
             for (BotCommandAbstract command : commands) {
 
                 if (cmd.equalsIgnoreCase(command.getCommand())) {
-                    sendMessage(command.handle(update));
-                    break;
+                    log.info("command processed: " + command.getCommand());
+                    try {
+                        return sendMessage(command.handle(update));
+                    } catch (TelegramApiException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
         }
+        return null;
     }
 
-    private void sendMessage(SendMessage msg) {
-        try {
-            msg.setReplyMarkup((new ReplyKeyboardMenu()).getKeyboardMarkup());
-            execute(msg);
-        } catch (TelegramApiException e) {
-            log.warn("error while sending message to telegram-bot");
-            throw new RuntimeException(e);
-        }
+    private SendMessage sendMessage(SendMessage msg) throws TelegramApiException {
+        msg.setReplyMarkup((new ReplyKeyboardMenu()).getKeyboardMarkup());
+        return msg;
     }
+
 }
