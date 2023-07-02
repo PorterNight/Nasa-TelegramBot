@@ -9,6 +9,7 @@ on:
       - '.github/workflows/nasabot.yml'
       - 'src/**'
       - 'pom.xml'
+      - 'Dockerfile'
       - 'checkstyle.xml'
       - '.editorconfig'
 
