@@ -33,7 +33,7 @@ public class HttpClientService implements ClientService {
             .build())
         .build();
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     public NasaPictureOfTheDayObject[] getNasaPictureOfTheDayObject(String url) throws Exception {
@@ -65,10 +65,10 @@ public class HttpClientService implements ClientService {
         }
 
         MarsPhotoResponse marsPhotoResponse = null;
+        assert httpResponse != null;
         log.warn("http response: " + Arrays.toString(httpResponse.getEntity().getContent().readAllBytes()));
 
         try {
-            assert httpResponse != null;
             marsPhotoResponse = objectMapper.readValue(httpResponse.getEntity().getContent(),
                 MarsPhotoResponse.class);
             log.warn("marsfoto mapping: " + marsPhotoResponse.toString());
