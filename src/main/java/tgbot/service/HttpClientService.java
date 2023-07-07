@@ -62,12 +62,15 @@ public class HttpClientService implements ClientService {
         } catch (IOException e){
             log.warn("MarsPhotoResponse IOexception !");
         }
+
         MarsPhotoResponse marsPhotoResponse = null;
+        log.warn("http response: " + httpResponse.getEntity().getContent().toString());
 
         try {
             assert httpResponse != null;
             marsPhotoResponse = objectMapper.readValue(httpResponse.getEntity().getContent(),
                 MarsPhotoResponse.class);
+            log.warn("marsfoto mapping: " + marsPhotoResponse.toString());
         } catch (StreamReadException e) {
             log.warn("MarsPhotoResponse StreamReadException !");
         } catch (DatabindException e) {
