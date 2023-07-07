@@ -31,7 +31,8 @@ public class MarsCommand extends BotCommandAbstract {
             msg.setText(obj.getPhotos().get(0).getEarthDate() + " " + obj.getPhotos().get(0).getImgSrc());
         } catch (Exception e) {
             log.warn("error getting objects !");
-            throw new RuntimeException(e);
+            msg.setText("");
+            //throw new RuntimeException(e);
         }
         return msg;
     }
