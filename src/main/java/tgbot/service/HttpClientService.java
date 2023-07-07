@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import tgbot.dto.mars.MarsPhotoResponse;
 import tgbot.dto.pod.NasaPictureOfTheDayObject;
 import java.io.IOException;
+import java.util.Arrays;
 
 @Slf4j
 @Component
@@ -64,7 +65,7 @@ public class HttpClientService implements ClientService {
         }
 
         MarsPhotoResponse marsPhotoResponse = null;
-        log.warn("http response: " + httpResponse.getEntity().getContent().readAllBytes().toString());
+        log.warn("http response: " + Arrays.toString(httpResponse.getEntity().getContent().readAllBytes()));
 
         try {
             assert httpResponse != null;
