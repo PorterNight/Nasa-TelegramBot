@@ -53,8 +53,8 @@ public class TgCommansTest {
             199,
             new Camera(1, "cam", 123, "curiosity"),
             "https://mars.com",
-            "2024",
-            new Rover(24, "rover", "2020", "2020", "dd")
+            "2024"
+//            new Rover(24, "rover", "2020", "2020", "dd")
         ));
 
         MarsPhotoResponse marsPhotoResponse = new MarsPhotoResponse(marsPhotos);

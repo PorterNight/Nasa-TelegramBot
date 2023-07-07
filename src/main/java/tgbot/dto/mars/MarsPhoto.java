@@ -19,23 +19,23 @@ public class MarsPhoto {
     @JsonProperty("earth_date")
     private final String earthDate;
 
-    @JsonProperty("rover")
-    private final Rover rover;
+//    @JsonProperty("rover")
+//    private final Rover rover;
 
     public MarsPhoto(
         @JsonProperty("id") int id,
         @JsonProperty("sol") int sol,
         @JsonProperty("camera") Camera camera,
         @JsonProperty("img_src") String imgSrc,
-        @JsonProperty("earth_date") String earthDate,
-        @JsonProperty("rover") Rover rover
+        @JsonProperty("earth_date") String earthDate
+//        @JsonProperty("rover") Rover rover
     ) {
         this.id = id;
         this.sol = sol;
         this.camera = camera;
         this.imgSrc = imgSrc;
         this.earthDate = earthDate;
-        this.rover = rover;
+//        this.rover = rover;
     }
 
     public int getId() {
@@ -58,9 +58,9 @@ public class MarsPhoto {
         return earthDate;
     }
 
-    public Rover getRover() {
-        return rover;
-    }
+//    public Rover getRover() {
+//        return rover;
+//    }
 
     @Override public String toString() {
         return "MarsPhoto{" +
@@ -69,7 +69,7 @@ public class MarsPhoto {
             ", camera=" + camera +
             ", imgSrc='" + imgSrc + '\'' +
             ", earthDate='" + earthDate + '\'' +
-            ", rover=" + rover +
+//            ", rover=" + rover +
             '}';
     }
 }
