@@ -25,7 +25,7 @@ public class MarsCommand extends BotCommandAbstract {
         SendMessage msg = new SendMessage();
         msg.setChatId(update.getMessage().getChatId());
 
-        log.info(BotConfig.getMarsUrl());
+        log.info(getMarsUrl());
 
         try {
             MarsPhotoResponse obj = clientService.getMarsPhotos(getMarsUrl());

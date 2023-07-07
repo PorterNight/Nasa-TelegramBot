@@ -54,7 +54,7 @@ public class HttpClientService implements ClientService {
     }
 
     @Override
-    public MarsPhotoResponse getMarsPhotos(String url) throws IOException {
+    public MarsPhotoResponse getMarsPhotos(String url) {
 
         CloseableHttpResponse httpResponse = null;
 
@@ -75,6 +75,8 @@ public class HttpClientService implements ClientService {
             log.warn("MarsPhotoResponse StreamReadException !");
         } catch (DatabindException e) {
             log.warn("MarsPhotoResponse DatabindException !");
+        } catch (IOException e) {
+            log.warn("MarsPhotoResponse IOexception !");
         }
 
         return marsPhotoResponse;
