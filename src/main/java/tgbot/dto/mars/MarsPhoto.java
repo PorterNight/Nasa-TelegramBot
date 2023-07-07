@@ -10,8 +10,8 @@ public class MarsPhoto {
     @JsonProperty("sol")
     private final int sol;
 
-    @JsonProperty("camera")
-    private final Camera camera;
+//    @JsonProperty("camera")
+//    private final Camera camera;
 
     @JsonProperty("img_src")
     private final String imgSrc;
@@ -32,7 +32,7 @@ public class MarsPhoto {
     ) {
         this.id = id;
         this.sol = sol;
-        this.camera = camera;
+//        this.camera = camera;
         this.imgSrc = imgSrc;
         this.earthDate = earthDate;
 //        this.rover = rover;
@@ -46,9 +46,9 @@ public class MarsPhoto {
         return sol;
     }
 
-    public Camera getCamera() {
-        return camera;
-    }
+//    public Camera getCamera() {
+//        return camera;
+//    }
 
     public String getImgSrc() {
         return imgSrc;
@@ -66,7 +66,7 @@ public class MarsPhoto {
         return "MarsPhoto{" +
             "id=" + id +
             ", sol=" + sol +
-            ", camera=" + camera +
+            //", camera=" + camera +
             ", imgSrc='" + imgSrc + '\'' +
             ", earthDate='" + earthDate + '\'' +
 //            ", rover=" + rover +
