@@ -6,6 +6,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import tgbot.config.BotConfig;
 import tgbot.dto.mars.MarsPhotoResponse;
 import tgbot.service.ClientService;
+import java.io.IOException;
 import static tgbot.commands.BotCommands.MARS;
 import static tgbot.config.BotConfig.getMarsUrl;
 

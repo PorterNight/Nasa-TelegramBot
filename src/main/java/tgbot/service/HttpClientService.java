@@ -12,6 +12,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.stereotype.Component;
 import tgbot.dto.mars.MarsPhotoResponse;
 import tgbot.dto.pod.NasaPictureOfTheDayObject;
+import java.io.IOException;
 
 @Slf4j
 @Component
@@ -52,11 +53,19 @@ public class HttpClientService implements ClientService {
     }
 
     @Override
-    public MarsPhotoResponse getMarsPhotos(String url) throws Exception {
-        CloseableHttpResponse httpResponse = httpClient.execute(new HttpGet(url));
+    public MarsPhotoResponse getMarsPhotos(String url) throws IOException {
+
+        CloseableHttpResponse httpResponse = null;
+
+        try {
+            httpResponse = httpClient.execute(new HttpGet(url));
+        } catch (IOException e){
+            log.warn("MarsPhotoResponse IOexception !");
+        }
         MarsPhotoResponse marsPhotoResponse = null;
 
         try {
+            assert httpResponse != null;
             marsPhotoResponse = objectMapper.readValue(httpResponse.getEntity().getContent(),
                 MarsPhotoResponse.class);
         } catch (StreamReadException e) {
