@@ -64,7 +64,7 @@ public class HttpClientService implements ClientService {
         }
 
         MarsPhotoResponse marsPhotoResponse = null;
-        log.warn("http response: " + httpResponse.getEntity().getContent().toString());
+        log.warn("http response: " + httpResponse.getEntity().getContent().readAllBytes().toString());
 
         try {
             assert httpResponse != null;
