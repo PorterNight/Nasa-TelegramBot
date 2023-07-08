@@ -33,7 +33,7 @@ public class HttpClientService implements ClientService {
             .build())
         .build();
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     public NasaPictureOfTheDayObject[] getNasaPictureOfTheDayObject(String url) throws Exception {
@@ -42,8 +42,10 @@ public class HttpClientService implements ClientService {
         NasaPictureOfTheDayObject[] nasaPictureOfADayObject = null;
 
         try {
-            nasaPictureOfADayObject = objectMapper.readValue(httpResponse.getEntity().getContent(),
-                NasaPictureOfTheDayObject[].class);
+            nasaPictureOfADayObject = objectMapper.readValue(
+                httpResponse.getEntity().getContent(),
+                NasaPictureOfTheDayObject[].class
+            );
         } catch (StreamReadException e) {
             log.warn("NasaPictureOfADayObject StreamReadException !");
         } catch (DatabindException e) {
@@ -54,23 +56,16 @@ public class HttpClientService implements ClientService {
     }
 
     @Override
-    public MarsPhotoResponse getMarsPhotos(String url) {
+    public MarsPhotoResponse getMarsPhotos(String url) throws IOException {
 
-        CloseableHttpResponse httpResponse = null;
+        try (CloseableHttpResponse httpResponse = httpClient.execute(new HttpGet(url));) {
 
-        try {
-            httpResponse = httpClient.execute(new HttpGet(url));
-        } catch (IOException e){
-            log.warn("MarsPhotoResponse IOexception !");
-        }
-
-        MarsPhotoResponse marsPhotoResponse = null;
-        assert httpResponse != null;
-
-        try {
-            marsPhotoResponse = objectMapper.readValue(httpResponse.getEntity().getContent(),
-                MarsPhotoResponse.class);
+            MarsPhotoResponse marsPhotoResponse = objectMapper.readValue(
+                httpResponse.getEntity().getContent(),
+                MarsPhotoResponse.class
+            );
             log.warn("marsfoto mapping: " + marsPhotoResponse.toString());
+            return marsPhotoResponse;
         } catch (StreamReadException e) {
             log.warn("MarsPhotoResponse StreamReadException !");
         } catch (DatabindException e) {
@@ -78,7 +73,6 @@ public class HttpClientService implements ClientService {
         } catch (IOException e) {
             log.warn("MarsPhotoResponse IOexception !");
         }
-
-        return marsPhotoResponse;
+        return null;
     }
 }

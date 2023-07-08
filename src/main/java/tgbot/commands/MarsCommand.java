@@ -30,10 +30,12 @@ public class MarsCommand extends BotCommandAbstract {
         try {
             MarsPhotoResponse obj = clientService.getMarsPhotos(getMarsUrl());
             msg.setText(obj.getPhotos().get(0).getEarthDate() + " " + obj.getPhotos().get(0).getImgSrc());
-        } catch (Exception e) {
+        } catch (IOException e) {
             log.warn("error getting objects !");
             msg.setText("");
             //throw new RuntimeException(e);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
         return msg;
     }
