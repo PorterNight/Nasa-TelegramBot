@@ -58,14 +58,14 @@ public class HttpClientService implements ClientService {
     @Override
     public MarsPhotoResponse getMarsPhotos(String url) throws IOException {
 
-        try (CloseableHttpResponse httpResponse = httpClient.execute(new HttpGet(url));) {
+        CloseableHttpResponse httpResponse = httpClient.execute(new HttpGet(url));
+        MarsPhotoResponse marsPhotoResponse = null;
 
-            MarsPhotoResponse marsPhotoResponse = objectMapper.readValue(
+        try {
+            marsPhotoResponse = objectMapper.readValue(
                 httpResponse.getEntity().getContent(),
                 MarsPhotoResponse.class
             );
-            log.warn("marsfoto mapping: " + marsPhotoResponse.toString());
-            return marsPhotoResponse;
         } catch (StreamReadException e) {
             log.warn("MarsPhotoResponse StreamReadException !");
         } catch (DatabindException e) {
@@ -73,6 +73,23 @@ public class HttpClientService implements ClientService {
         } catch (IOException e) {
             log.warn("MarsPhotoResponse IOexception !");
         }
-        return null;
+
+        return marsPhotoResponse;
+//        try (CloseableHttpResponse httpResponse = httpClient.execute(new HttpGet(url));) {
+//
+//            MarsPhotoResponse marsPhotoResponse = objectMapper.readValue(
+//                httpResponse.getEntity().getContent(),
+//                MarsPhotoResponse.class
+//            );
+//            log.warn("marsfoto mapping: " + marsPhotoResponse.toString());
+//            return marsPhotoResponse;
+//        } catch (StreamReadException e) {
+//            log.warn("MarsPhotoResponse StreamReadException !");
+//        } catch (DatabindException e) {
+//            log.warn("MarsPhotoResponse DatabindException !");
+//        } catch (IOException e) {
+//            log.warn("MarsPhotoResponse IOexception !");
+//        }
+//        return null;
     }
 }
