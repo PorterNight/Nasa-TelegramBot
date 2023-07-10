@@ -23,9 +23,11 @@ import tgbot.service.ClientService;
 public class TelegramBot extends TelegramWebhookBot {
 
     private final List<BotCommandAbstract> commands;
+    private final BotConfig botConfig;
 
-    public TelegramBot(ClientService clientService) {
-        super(BotConfig.TG_BOT_TOKEN);
+    public TelegramBot(ClientService clientService, BotConfig botConfig) {
+        super(botConfig.TG_BOT_TOKEN);
+        this.botConfig = botConfig;
         commands = new ArrayList<>();
         commands.add(new StartCommand());
         commands.add(new PictureOfTheDayCommand(clientService));
@@ -35,12 +37,12 @@ public class TelegramBot extends TelegramWebhookBot {
 
     @Override
     public String getBotUsername() {
-        return BotConfig.TG_BOT_USERNAME;
+        return botConfig.TG_BOT_USERNAME;
     }
 
     @Override
     public String getBotPath() {
-        return BotConfig.WEBHOOK_URL;
+        return botConfig.WEBHOOK_URL;
     }
 
     @Override

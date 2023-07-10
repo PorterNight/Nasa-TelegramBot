@@ -10,10 +10,8 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import tgbot.commands.MarsCommand;
 import tgbot.commands.PictureOfTheDayCommand;
-import tgbot.dto.mars.Camera;
 import tgbot.dto.mars.MarsPhoto;
 import tgbot.dto.mars.MarsPhotoResponse;
-import tgbot.dto.mars.Rover;
 import tgbot.dto.pod.NasaPictureOfTheDayObject;
 import tgbot.service.HttpClientService;
 import java.util.ArrayList;
@@ -51,10 +49,8 @@ public class TgCommansTest {
         marsPhotos.add(new MarsPhoto(
             111,
             199,
-            new Camera(1, "cam", 123, "curiosity"),
             "https://mars.com",
-            "2024",
-            new Rover(24, "rover", "2020", "2020", "dd")
+            "2024"
         ));
 
         MarsPhotoResponse marsPhotoResponse = new MarsPhotoResponse(marsPhotos);
