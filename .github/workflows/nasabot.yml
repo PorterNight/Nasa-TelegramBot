@@ -17,9 +17,9 @@ jobs:
   build:
     runs-on: ubuntu-22.04
     env:
-      WNASA_TGBOT_TOKEN: ${{ secrets.NASA_TGBOT_TOKEN }}
-      WNASA_TGBOT_USERNAME: ${{ secrets.NASA_TGBOT_USERNAME }}
-      WNASA_TOKEN: ${{ secrets.NASA_TOKEN }}
+      NASA_TGBOT_TOKEN: ${{ secrets.NASA_TGBOT_TOKEN }}
+      NASA_TGBOT_USERNAME: ${{ secrets.NASA_TGBOT_USERNAME }}
+      NASA_TOKEN: ${{ secrets.NASA_TOKEN }}
     permissions:
       contents: read
       packages: write
@@ -57,10 +57,6 @@ jobs:
 
   checkstyle:
     runs-on: ubuntu-22.04
-    env:
-      WNASA_TGBOT_TOKEN: ${{ secrets.NASA_TGBOT_TOKEN }}
-      WNASA_TGBOT_USERNAME: ${{ secrets.NASA_TGBOT_USERNAME }}
-      WNASA_TOKEN: ${{ secrets.NASA_TOKEN }}
     
     steps:
       - uses: actions/checkout@v3
