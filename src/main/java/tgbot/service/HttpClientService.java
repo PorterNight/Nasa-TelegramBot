@@ -9,10 +9,12 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.springframework.stereotype.Component;
 import tgbot.dto.mars.MarsPhotoResponse;
 import tgbot.dto.pod.NasaPictureOfTheDayObject;
 
 @Slf4j
+@Component
 public class HttpClientService implements ClientService {
 
     private final int connectTimeout = 10000;

@@ -3,7 +3,7 @@ package tgbot.commands;
 public enum BotCommands {
     START("/start", " - command to register new user"),
     HELP("/help", " - command is used to get help"),
-    POD("/pod", " - command is used to get random picture of the day"),
+    POD("/picture of the day", " - command is used to get random picture of the day"),
     MARS("/mars", " - command is used to get random picture from Mars");
 
     private final String command;

@@ -14,5 +14,4 @@ public abstract class BotCommandAbstract extends BotCommand {
     public SendMessage handle(Update update) {
         return null;
     }
-
 }

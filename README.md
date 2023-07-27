@@ -4,7 +4,7 @@
 
 ## General info
 Telegram bot предоставляет две команды: 
-* "/pod" - (picture of a day) фото дня выбранное случайным образом 
+* "/picture of the day" - фото дня выбранное случайным образом 
 * "/mars" - фото с марсохода Curiosity выбранное случайным образом 
 
  Фото берутся с сайта NASA https://api.nasa.gov/ 
@@ -14,7 +14,8 @@ Telegram bot предоставляет две команды:
 * Docker
 
 ### Technologies
-* Telegram BOT
+* Telegram Bot with WebHook
+* Spring-boot
 * Docker
 * CI/CD (Github Actions)
 * Checkstyle
@@ -25,3 +26,8 @@ Telegram bot предоставляет две команды:
 * NASA_TGBOT_TOKEN = token of your telegram bot
 * NASA_TOKEN = token from https://api.nasa.gov/, you can use demo-key: DEMO_KEY
 
+Для корректной работы webhook можно использовать ngrok для доступа http через внешний https.
+Для установки webhook использовать команду: https://api.telegram.org/bot{NASA_TGBOT_TOKEN}/setWebhook?url={https://ngrok-free.app}.
+
+Вместо https://ngrok-free.app подставить адрес предоставленный ngrok. 
+ 
