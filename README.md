@@ -4,7 +4,7 @@
 
 ## General info
 Telegram bot предоставляет две команды: 
-* "/pod" - (picture of the day) фото дня выбранное случайным образом 
+* "/picture of the day" - фото дня выбранное случайным образом 
 * "/mars" - фото с марсохода Curiosity выбранное случайным образом 
 
  Фото берутся с сайта NASA https://api.nasa.gov/ 
@@ -14,7 +14,7 @@ Telegram bot предоставляет две команды:
 * Docker
 
 ### Technologies
-* Telegram BOT with WebHook
+* Telegram Bot with WebHook
 * Spring-boot
 * Docker
 * CI/CD (Github Actions)
