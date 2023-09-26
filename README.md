@@ -30,4 +30,10 @@ Telegram bot предоставляет две команды:
 Для установки webhook использовать команду: https://api.telegram.org/bot{NASA_TGBOT_TOKEN}/setWebhook?url={https://ngrok-free.app}.
 
 Вместо https://ngrok-free.app подставить адрес предоставленный ngrok. 
- 
+
+### ToDo:
+* Nginx + SSL certificate 
+* Postgres
+* Limit requests
+* Metrics
+
